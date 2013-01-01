@@ -1,0 +1,40 @@
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>jQuery Slug plugin</title>
+        <style>pre{background-color: #212121;padding: 10px;color: white;overflow-x: auto;}</style>   
+    </head>
+    <body>
+        <h1><a href="https://github.com/ducsduyen/jquery.slug">jQuery Slug plugin</a></h1>	
+
+        <h3>Example</h3>
+        <pre>
+            &lt;script type="text/javascript"&gt;
+            $(function(){
+                $('#title').change(function(){
+                    $("#slug").val($(this).slug());
+                });
+            });
+            &lt;/script&gt;
+        </pre>
+
+        <form action="index.html" method="get">
+            <label for="title">Title</label><br />
+            <input type="text" name="title" id="title" style="width: 400px" /><br />
+            <label for="slug">Friendly URL</label><br />
+            <input type="text" name="slug" id="slug" style="width: 400px" readonly="readonly" />
+        </form>
+
+
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript" src="jquery.slug.js"></script>
+        <script type="text/javascript">
+            $(function(){
+                $('#title').change(function(){
+                    $("#slug").val($(this).slug());
+                });
+            });
+        </script>
+    </body>
+</html>
