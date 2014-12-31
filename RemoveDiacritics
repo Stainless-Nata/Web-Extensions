@@ -1,0 +1,17 @@
+public static string RemoveDiacritics(String s)
+{
+    if (string.IsNullOrWhiteSpace(s)) return string.Empty;
+
+    s = s.Replace('Đ', 'd').Replace('đ', 'd');
+
+    var normalizedString = s.Normalize(System.Text.NormalizationForm.FormD);
+    var stringBuilder = new System.Text.StringBuilder();
+
+    foreach (char c in normalizedString)
+    {
+        if (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c) != System.Globalization.UnicodeCategory.NonSpacingMark)
+            stringBuilder.Append(c);
+    }
+
+    return stringBuilder.ToString();
+}
