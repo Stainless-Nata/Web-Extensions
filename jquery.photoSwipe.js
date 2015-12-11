@@ -59,3 +59,6 @@
         return this;
     };
 }(jQuery));
+$(function () {
+    $(selector).photoSwipe();
+})
