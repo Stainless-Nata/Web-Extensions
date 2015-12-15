@@ -6,9 +6,9 @@
             bgOpacity: 0.96,
             history: false,
             className: "lightbox",
-            galleryUID:1,
+            galleryUID: 1,
             getThumbBoundsFn: function (index) {
-                var $el = $(items[index].el);
+                var $el = $($.fn.photoSwipe.items[index].el);
                 return { x: $el.offset().left, y: $el.offset().top, w: $el.width() };
             }
         }, options);
@@ -21,7 +21,7 @@
         var pswpElement = $pswpe[0];
 
         // build items array
-        var items = [];
+        $.fn.photoSwipe.items = [];
         this.filter("img[src]").load(function () {
             var $this = $(this);
             var item = {
@@ -29,33 +29,47 @@
                 w: parseInt($this.prop("naturalWidth")),//Math.max(parseInt($this.prop("naturalWidth")), parseInt($this.attr("width"))),
                 h: parseInt($this.prop("naturalHeight")),//Math.max(parseInt($this.prop("naturalHeight")), parseInt($this.attr("height"))),
                 title: $this.attr("alt"),
-                el: this
+                el: this,
+                i: parseInt($this.attr("data-i"))
             };
             if (item.w > settings.minWidth && item.h > settings.minHeight) {
                 //Thêm những ảnh có chiều rộng lớn hơn 480px
-                items.push(item);
+                $.fn.photoSwipe.items.push(item);
+                $.fn.photoSwipe.items.sort(function (a, b) { return parseFloat(a.i) - parseFloat(b.i); });
+                
+
                 $this.addClass("lightbox");
-                $this.click({ idx: items.length - 1 }, function (e) {
+
+                $this.click(function (e) {
+
+                    var idx = 0;
+                    $.each($.fn.photoSwipe.items, function (i, o) {
+                        if (o.src == $this.attr("src")) {
+                            idx=i;
+                        }
+                    });//Lấy index của ảnh đã được load trong array không tính ảnh chưa được load hoặc ảnh hỏng
+
                     var options = {
                         history: settings.history,
                         bgOpacity: settings.bgOpacity,
-                        galleryUID:settings.galleryUID,
-                        index: e.data.idx, // start at index
+                        galleryUID: settings.galleryUID,
+                        index: idx, // start at index
                         getThumbBoundsFn: settings.getThumbBoundsFn
 
                     };
                     // Initializes and opens PhotoSwipe
-                    var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+                    var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, $.fn.photoSwipe.items, options);
                     gallery.init();
                     e.preventDefault();
-                });
 
+                    console.log(idx);
+                    console.log($.fn.photoSwipe.items);
+                });
             }
             //console.log(item);
             //console.log([parseInt($this.prop("naturalWidth")), parseInt($this.attr("width")), $this.width()]);
             //console.log([parseInt($this.prop("naturalHeight")), parseInt($this.attr("height")), $this.height()]);
-        }).each(function () { if (this.complete) $(this).load(); console.log("reload"); });
-
+        }).each(function (i) { $(this).attr("data-i", i);/*Đánh dấu thứ tự ảnh*/ if (this.complete) $(this).load(); console.log("reload"); });
         return this;
     };
 }(jQuery));
