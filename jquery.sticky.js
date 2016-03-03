@@ -21,7 +21,6 @@
         }
 
         return this.each(function () {
-
             var $this = $(this);
             var $offsetParent = $this.offsetParent();
           
