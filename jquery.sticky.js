@@ -1,0 +1,83 @@
+﻿// Sticky Plugin v1 for jQuery
+// =============
+// Author: Ducs Duyen 
+// Created: 03/03/2016
+
+(function ($) {
+  
+    $.fn.sticky = function (options) {
+        // Bob's default settings:
+        var defaults = {
+            topSpacing: 0,
+            bottomSpacing: 0,
+            debug: false
+        };
+        var settings = $.extend({}, defaults, options);
+
+        var log = function (message, params) {
+            if (typeof console == "object" && $.fn.sticky.debug) {
+                console.log(message, params);
+            }
+        }
+
+        return this.each(function () {
+
+            var $this = $(this);
+            var $offsetParent = $this.offsetParent();
+          
+            $this.width($this.width());//Cố định css width để khi fixed không bị tự động thay đổi chiều rộng
+            var $holder = $("<div class='sticky-holder' style='visibility: hidden;height:0;display:block'></div>").insertBefore($this).height($this.height());
+
+            $(window).scroll(function () {
+                log("id", $this.attr("id"));
+                var offset = $holder.offset();
+
+                var windowpos = $(window).scrollTop();
+                var stickermax = $(document).outerHeight() - settings.bottomSpacing - settings.topSpacing - $this.outerHeight();
+
+                if (stickermax <= 0 //Nếu không có khoảng trống để trượt thì thôi
+                    || $this.height() <= 0) //Nếu chiều cao của sticker bằng 0
+                {
+                    return;
+                }
+
+                if (windowpos >= offset.top && windowpos < stickermax) {
+                    if ($this.css("position") != "fixed") {
+                        $this.trigger("sticky-start"); log("event", "sticky-start");
+                    }
+                    $this.css({ position: "fixed", top: settings.topSpacing }); //stick it
+                    $holder.height($this.height());//Hiển thị holder
+
+                } else if (windowpos >= stickermax) {
+                    if ($this.css("position") != "absolute") {
+                        $this.trigger("sticky-bottom-reached");
+                        log("event", "sticky-bottom-reached");
+                    }
+                    $this.css({ position: "absolute", top: (stickermax - $offsetParent.offset().top) + "px", }); //set sticker right above the footer
+                    $holder.height($this.height());//Ẩn holder
+                    log("stickermax - $offsetParent.offset().top", stickermax - $offsetParent.offset().top);
+
+                } else {
+                    if ($this.css("position") != "") {
+                        $this.trigger("sticky-end");
+                        log("event", "sticky-end");
+                    }
+                    $this.css({ position: "", top: "" });
+                    $holder.height(0);//Ẩn holder
+                }
+
+                log("ooffset", offset);
+                log("position", $this.position());
+                log("offset", $this.offset());
+                log("windowpos", windowpos);
+                log("$offsetParent.offset().top", $offsetParent.offset().top);
+                log("height", $this.height());
+                log("stickermax", stickermax);
+            });
+
+            return this;
+        });
+    }
+    $.fn.sticky.debug = false;
+
+}(jQuery));
