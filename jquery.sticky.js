@@ -1,4 +1,4 @@
-﻿// Sticky Plugin v1 for jQuery
+// Sticky Plugin v1 for jQuery
 // =============
 // Author: Ducs Duyen 
 // Created: 03/03/2016
@@ -21,11 +21,12 @@
         }
 
         return this.each(function () {
+
             var $this = $(this);
             var $offsetParent = $this.offsetParent();
           
             $this.width($this.width());//Cố định css width để khi fixed không bị tự động thay đổi chiều rộng
-            var $holder = $("<div class='sticky-holder' style='visibility: hidden;height:0;display:block'></div>").insertBefore($this).height($this.height());
+            var $holder = $("<div class='sticky-holder' style='visibility: hidden;height:0;display:block'></div>").insertBefore($this);
 
             $(window).scroll(function () {
                 log("id", $this.attr("id"));
