@@ -1,10 +1,10 @@
 // Sticky Plugin v1 for jQuery
 // =============
-// Author: Ducs Duyen 
+// Author: Ducsduyen 
 // Created: 03/03/2016
 
 (function ($) {
-  
+
     $.fn.sticky = function (options) {
         // Bob's default settings:
         var defaults = {
@@ -24,7 +24,7 @@
 
             var $this = $(this);
             var $offsetParent = $this.offsetParent();
-          
+
             $this.width($this.width());//Cố định css width để khi fixed không bị tự động thay đổi chiều rộng
             var $holder = $("<div class='sticky-holder' style='visibility: hidden;height:0;display:block'></div>").insertBefore($this);
 
@@ -54,16 +54,18 @@
                         log("event", "sticky-bottom-reached");
                     }
                     $this.css({ position: "absolute", top: (stickermax - $offsetParent.offset().top) + "px", }); //set sticker right above the footer
-                    $holder.height($this.height());//Ẩn holder
+                    $holder.height($this.height());//Hiển thị holder
                     log("stickermax - $offsetParent.offset().top", stickermax - $offsetParent.offset().top);
 
                 } else {
+
                     if ($this.css("position") != "") {
                         $this.trigger("sticky-end");
                         log("event", "sticky-end");
                     }
-                    $this.css({ position: "", top: "" });
+
                     $holder.height(0);//Ẩn holder
+                    $this.css({ position: "", top: "" });
                 }
 
                 log("ooffset", offset);
