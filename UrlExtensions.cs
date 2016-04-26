@@ -11,8 +11,8 @@
         url = Regex.Replace(url, "[ýỳỷỹỵ]", "y", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         url = Regex.Replace(url, "[úùủũụưứừửữự]", "u", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         url = Regex.Replace(url, "\\s+", "-", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        url = Regex.Replace(url, "[-]+", "-", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         url = Regex.Replace(url, "[^a-z0-9-]", "", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        url = Regex.Replace(url, "[-]+", "-", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         return url.Trim('-', ' ');
     }
 }
